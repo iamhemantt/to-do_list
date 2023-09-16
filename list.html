@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODOLIST</title>
+    <style>
+        * {
+            margin: 0%;
+            padding: 0%;
+        }
+
+        header {
+            border-bottom: 1px solid rgb(46, 189, 174);
+            text-transform: uppercase;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        h1 {
+            font-size: 7vh;
+            text-align: center;
+            font-family: sans-serif;
+            color: rgb(46, 189, 174);
+        }
+
+        main {
+            padding: 10px;
+            margin: 10px;
+            min-height: 100vh;
+        }
+
+        .userinput {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input {
+            padding: 10px;
+            width: 50vw;
+        }
+
+        .i-b {
+            padding: 10px;
+            border-radius: 10px;
+            outline: none;
+            border: 1px solid rgb(76, 170, 173);
+            margin: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px 10px 20px;
+            color: #fff;
+            background-color: rgb(46, 189, 174);
+            transition: ease-in-out 0.2s
+        }
+
+        .btn:hover {
+            background-color: rgb(28, 134, 138);
+        }
+
+        .container {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .dtn {
+            border: none;
+        }
+
+        p {
+            font-family: Arial, Helvetica, sans-serif
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>todo list</h1>
+    </header>
+    <main>
+        <div class="userinput">
+            <input type="text" id="input" class="i-b" placeholder="addn item...">
+            <button class="btn i-b" onclick="items()">ADD</button>
+        </div>
+
+        <div class="container">
+        </div>
+    </main>
+    <script>
+        let container = document.querySelector(".container");
+        let is = document.querySelector(".list-item")
+        let user = document.getElementById("input");
+
+
+
+        let arr = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : [];
+        addlist();
+        function addlist() {
+            arr.forEach((value, index) => {
+                // div tag
+                let div = document.createElement("div");
+                container.appendChild(div);
+                div.classList.add("list-item");
+                // paragraph tag
+                let note = document.createElement("p");
+                div.appendChild(note);
+                note.innerText = value.user;
+                //delete btn tag
+                let btn = document.createElement("button");
+                btn.innerText = "Delete"
+                btn.classList.add("btn");
+                btn.classList.add("dtn")
+                div.appendChild(btn);
+                btn.addEventListener("click", () => {
+                    removefirst();
+                    arr.splice(index, 1);
+                    localStorage.setItem("list", JSON.stringify(arr));
+                    addlist();
+                })
+            })
+        }
+
+        function removefirst() {
+            arr.forEach(() => {
+                let list = document.querySelector(".list-item");
+                list.remove();
+            })
+        }
+
+
+
+        function items() {
+            if (user.value == "") {
+                alert("Enter Somenthig....");
+            } else {
+
+                removefirst();
+                arr.push({
+                    user: user.value
+                })
+                localStorage.setItem("list", JSON.stringify(arr));
+                addlist();
+            }
+        }
+
+    </script>
+</body>
+
+</html>
